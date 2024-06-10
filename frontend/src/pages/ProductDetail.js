@@ -15,7 +15,6 @@ export default function Productdetail({cartitem,setcartitem}){
     function addtocart(){
         const flag=cartitem.find((item)=>{
             if(item.product._id==product._id){
-                item.qty++
                 return true
             }
         })

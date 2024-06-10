@@ -17,7 +17,7 @@ function App() {
     <div className="App">
       <Router>
         <div>
-          <ToastContainer theme='dark' />
+          <ToastContainer theme='dark' position="bottom-right" />
           <Header cartitem={cartitem}/>
           <Routes>
             <Route path='/' element={<Home/>} />
