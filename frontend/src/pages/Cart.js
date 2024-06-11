@@ -1,9 +1,13 @@
 import { Fragment, useEffect, useState } from "react";
-import { Link, json } from "react-router-dom";
+import { Link} from "react-router-dom";
+import {toast} from 'react-toastify';
+
+
 export default function Cart({ cartitem, setcartitem }) {
 
     useEffect(() => { updateSummary() }, [])
     const[unit,setUnit]=useState(0)
+    const[orderStatus,setOrderStatus]=useState(false)
     
     function updateSummary() {
         const totalPrice = cartitem.reduce((acc, item) => {
@@ -53,12 +57,16 @@ export default function Cart({ cartitem, setcartitem }) {
     }
 
     function placeOrder(){
-            console.log(JSON.stringify(cartitem));
         cartitem && fetch(process.env.REACT_APP_API_URL+'/order',{
             method:'POST',
             headers:{'content-type':'application/json'},
+            body:JSON.stringify(cartitem)
+        }) .then(()=>{
+            setcartitem({})
+            setOrderStatus(true)
+            toast.success("Order placed")
             
-        }) 
+        })
     }
 
 
@@ -101,9 +109,9 @@ export default function Cart({ cartitem, setcartitem }) {
                                 </div>
                             </div>
                         </Fragment>
-
-
                     })}
+
+                    
 
                 </div>
 
@@ -120,6 +128,6 @@ export default function Cart({ cartitem, setcartitem }) {
                 </div>
             </div>
         </div>
-    </Fragment >:<h2 className="mt-4">Your cart is empty</h2>
+    </Fragment >: (orderStatus?<h2 className="mt-4">Your order is completed</h2>:<h2 className="mt-4">Your cart is empty</h2>)
 
 }
